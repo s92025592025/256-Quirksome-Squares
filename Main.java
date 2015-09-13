@@ -1,17 +1,11 @@
 import java.util.Scanner;
 class Main{
-
-	static String addZero(int N, int num){
-		StringBuffer sb=new StringBuffer();
-		for(int i=0; i<N-Integer.toString(num).length(); i++){
-			sb.append("0");
+	static String addZero(int N, String num){
+		StringBuffer sb=new StringBuffer(num);
+		for(int i=0; i<N-sb.length(); i++){
+			sb.insert(0, '0');
 		}
-		sb.append(Integer.toString(num));
 		return sb.toString();
-	}
-	static boolean confirmQurik(int N, String num){
-		String former=num.substring(0, N/2), latter=num.substring(N/2);
-		return Math.pow(Integer.parseInt(former)+Integer.parseInt(latter), 2)==Integer.parseInt(num);
 	}
 
 	public static void main(String[] args) {
@@ -25,11 +19,13 @@ class Main{
 
 	static StringBuffer findAns(int N){
 		StringBuffer sb=new StringBuffer();
-		for(int i=0; i<Math.pow(10, N); i++){
-			String number=addZero(N, i);
-			if(confirmQurik(N, number)){
-				if(i>0){sb.append("\n");}
-				sb.append(number);
+		for(int i=0; i<Math.pow(10, N-1); i++){
+			for(int s=0; s<Math.pow(10, N-1); s++){
+				double number=i*Math.pow(10, N-1)+s;
+				if(Math.pow(i+s, 2)==number){
+					if(number>0){sb.append("\n");}
+					sb.append(addZero(N, Double.toString(number).substring(0, Double.toString(number).length()-2)));
+				}
 			}
 		}
 		return sb;
